@@ -17,8 +17,7 @@ Documentation: ​https://weatherstack.com/documentation
 
 2. OpenWeatherMap (failover):
 curl
-"http://api.openweathermap.org/data/2.5/weather?q=melbourne,AU&appid=2326504fb9b100bee
-21400190e4dbe6d"
+"http://api.openweathermap.org/data/2.5/weather?q=melbourne,AU&appid=YOUR_APP_ID"
 
 Documentation: ​https://openweathermap.org/current
 
@@ -40,7 +39,10 @@ as the api would return 200 http status code whenever WITH any errors,
 so I will get the NullPointerException for the getCurrent() if my key or city is wrong or with Internal Server error,
 that make me failover to OpenWeatherMap, 
 Then if I get 404 / 401 Exception if wrong api key and wrong city name from OpenWeatherMap, 
-I will failover to ConcurrentHaspMap function and return as lifelong Cache 
+I will failover to ConcurrentHaspMap function and return as lifelong Cache ,
+
+If lifelong Cache are null by Key, I would throw the Exception for Service Unavialble.
+
 ```
 
 ● Have scalability and reliability in mind when designing the solution.
@@ -129,15 +131,21 @@ To run tests, run the following command
 ```
 
 ```
-Proxy Test cases are disable by default because it is just testing the output of the api and you need to provide the api key in the function for fast developing purpose
+Proxy Test cases are disable by default,
+because it is just testing the output of the api ,
+and you need to provide the api key in the function for fast developing purpose
+
 Service and Controller will mock the result and doing the unit test
 
-Both Test show the initial structure of the concept on how to mock the result and make sure the logic inside the function expected.
+Both Tests show the initial structure of the concept on 
+how to mock the result and make sure the logic inside the function are expected.
+
 Can add more test to converage more logic throw,
 for example, throw some expection and see if the functions can failover to another methods
+or failover to the lifelong Cache
+
 
 I didn't do the integration test for cache manager and the external api test.
-
 
 ```
 
