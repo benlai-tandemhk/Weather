@@ -66,8 +66,16 @@ There is ConcurrentHaspMap serve as a lifelong cache for return if both servers 
 ● The proposed solution should allow new developers to make changes to the code safely.
 
 ##Expected Output
-Calling the service via curl (​http://localhost:8080/v1/weather?city=melboune​) should output the
+Calling the service via curl (​http://localhost:8080/v1/weather?city=melbourne​) should output the
 following JSON payload
+
+```
+
+I didn't hard code the city name,
+but add the country code when call open weather map api, 
+so be make sure the city name is correct
+
+```
 {
 "wind_speed": 20,
 "temperature_degrees": 29
