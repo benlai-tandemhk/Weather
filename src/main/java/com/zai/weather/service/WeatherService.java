@@ -39,11 +39,10 @@ public class WeatherService {
     @HystrixCommand(fallbackMethod = "getWeatherUsingOpenWeather")
     public WeatherResponseDto getWeatherUsingWeatherStack(String city) throws Exception {
 
-        System.out.println("fallbackMethod to getWeatherUsingWeatherStack");
+        System.out.println("start at getWeatherUsingWeatherStack");
         WeatherStackResponse result = weatherStackClient.getWeather(city, weatherConstant.WEATHER_STACK_API_KEY);
-        WeatherResponseDto response = new WeatherResponseDto();
 
-        System.out.println(result.toString());
+        WeatherResponseDto response = new WeatherResponseDto();
 
         //here will throw exception if the getCurrent is null if using wrong city or wrong api key
         response.setWind_speed(Math.round(result.getCurrent().getWind_speed()));
@@ -58,6 +57,7 @@ public class WeatherService {
     @HystrixCommand(fallbackMethod = "getCachedWeather")
     public WeatherResponseDto getWeatherUsingOpenWeather(String city) throws Exception {
 
+        System.out.println("fallbackMethod to getWeatherUsingOpenWeather");
         //add country code just for this OpenWeather Api
         String c = city+",AU";
 
@@ -65,7 +65,7 @@ public class WeatherService {
 
         WeatherResponseDto response = new WeatherResponseDto();
 
-        response.setWind_speed(Math.round(result.getWind().getSpeed()));
+        response.setWind_speed(Math.round(result.getWind().getSpeed() * 60 * 60 / 1000));
         response.setTemperature_degrees(Math.round((result.getMain().getTemp())));
 
         cacheForeverWeather.put(city, response);
@@ -74,7 +74,7 @@ public class WeatherService {
 
 
 
-    public WeatherResponseDto getCachedWeather(String city) throws Exception {
+    public WeatherResponseDto getCachedWeather(String city) {
         System.out.println("fallbackMethod to getCachedWeather");
         if (cacheForeverWeather.get(city) != null) {
             return cacheForeverWeather.get(city);

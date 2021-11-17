@@ -1,7 +1,5 @@
 package com.zai.weather.constants;
 
-
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 

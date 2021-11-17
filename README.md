@@ -36,17 +36,18 @@ without affecting your customers.
 
 ```
 The failover flow is call WeatherStack first,
-as the api return 200 http status code,
-so I will get the NullPointerException that make me failover to OpenWeatherMap, 
-Then if I still get 404 / 401 Exception from OpenWeatherMap, 
+as the api would return 200 http status code whenever WITH any errors,
+so I will get the NullPointerException for the getCurrent() if my key or city is wrong or with Internal Server error,
+that make me failover to OpenWeatherMap, 
+Then if I get 404 / 401 Exception if wrong api key and wrong city name from OpenWeatherMap, 
 I will failover to ConcurrentHaspMap function and return as lifelong Cache 
 ```
 
 ● Have scalability and reliability in mind when designing the solution.
 
 ```
-There is Dto for the OpenWeatherMap response and WeatherStack response ,
-for extend and using FeignClient as interface for 2 api for override 
+There are Dto for the OpenWeatherMap response and WeatherStack response for extend,
+I also using FeignClient as interface for 2 api OpenWeatherMap and WeatherStack for override or add more interface method if needed pass more query parameter
 ```
 
 ● Weather results are fine to be cached for up to 3 seconds on the server in normal
@@ -72,8 +73,10 @@ following JSON payload
 
 ##Assumtion 
 wind_speed is kilometer / hour
+weather stack is default using kilometer / hour
+openWeatherMap need 60 * 60 / 1000
 
-
+OpenWeatherMap use units = Meteric to get the temperature_degrees in Celsius
 ## Environment Variables
 
 This project is built on openjdk 11. Please set your JAVA_HOME to your JDK path, e.g.
@@ -123,6 +126,19 @@ To run tests, run the following command
 
 ```bash
   ./gradlew test
+```
+
+```
+Proxy Test cases are disable by default because it is just testing the output of the api and you need to provide the api key in the function for fast developing purpose
+Service and Controller will mock the result and doing the unit test
+
+Both Test show the initial structure of the concept on how to mock the result and make sure the logic inside the function expected.
+Can add more test to converage more logic throw,
+for example, throw some expection and see if the functions can failover to another methods
+
+I didn't do the integration test for cache manager and the external api test.
+
+
 ```
 
 ## API Reference

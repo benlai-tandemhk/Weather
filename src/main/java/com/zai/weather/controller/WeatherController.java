@@ -17,7 +17,7 @@ public class WeatherController {
     @GetMapping("")
     public WeatherResponseDto getWeatherFromCity(@RequestParam (value = "city") String city) throws Exception
     {
-        return weatherService.getWeatherUsingOpenWeather(city);
+        return weatherService.getWeatherUsingWeatherStack(city);
     }
 
 }

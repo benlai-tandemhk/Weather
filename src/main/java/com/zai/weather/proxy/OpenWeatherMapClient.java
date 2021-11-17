@@ -1,10 +1,7 @@
 package com.zai.weather.proxy;
 
-import com.zai.weather.constants.WeatherConstant;
 import com.zai.weather.dto.OpenWeatherMapResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 

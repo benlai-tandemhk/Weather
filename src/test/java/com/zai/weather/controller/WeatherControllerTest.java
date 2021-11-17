@@ -33,13 +33,15 @@ public class WeatherControllerTest {
 
 
     @Test
-    public void testGetWeather() throws Exception {
+    public void testGetWeatherWhenWeatherServiceGetWeatherUsingWeatherStackCanWeatherResponse() throws Exception {
 
         String city = "melbourne";
         WeatherResponseDto weather = new WeatherResponseDto();
-        Mockito.when(weatherService.getWeatherUsingOpenWeather(city)).thenReturn(weather);
+        Mockito.when(weatherService.getWeatherUsingWeatherStack(city)).thenReturn(weather);
 
         WeatherResponseDto testWeather = weatherController.getWeatherFromCity(city);
         assertEquals(weather, testWeather);
     }
+
+
 }
