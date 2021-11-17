@@ -34,24 +34,31 @@ temperature in degrees Celsius and wind speed.
 ● If one of the provider goes down, your service can quickly failover to a different provider
 without affecting your customers.
 
+```
 The failover flow is call WeatherStack first,
 as the api return 200 http status code,
 so I will get the NullPointerException that make me failover to OpenWeatherMap, 
 Then if I still get 404 / 401 Exception from OpenWeatherMap, 
 I will failover to ConcurrentHaspMap function and return as lifelong Cache 
+```
 
 ● Have scalability and reliability in mind when designing the solution.
 
-There is Dto for the OpenWeatherMap response and WeatherStack response for extend and using FeignClient as interface for 2 api for override 
+```
+There is Dto for the OpenWeatherMap response and WeatherStack response ,
+for extend and using FeignClient as interface for 2 api for override 
+```
 
 ● Weather results are fine to be cached for up to 3 seconds on the server in normal
 behaviour to prevent hitting weather providers. Those results must be served as stale if
 all weather providers are down.
 
-
+```
 Setup a Caffeine cache and config the expireAfterWrite for 3 secs so it will return cachable Weathers within 3 secs
 
 There is ConcurrentHaspMap serve as a lifelong cache for return if both servers are down.
+
+```
 
 ● The proposed solution should allow new developers to make changes to the code safely.
 
